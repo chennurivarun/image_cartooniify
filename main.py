@@ -1,8 +1,9 @@
-import cv2 #for image processing
-import easygui #to open the filebox
-import numpy as np #to store image
-import imageio #to read image stored at particular path
+#Importing the required modules
 
+import cv2                   #for image processing
+import easygui               #to open the filebox
+import numpy as np           #to store image
+import imageio               #to read image stored at particular path
 import sys
 import matplotlib.pyplot as plt
 import os
@@ -17,10 +18,13 @@ top.title('Cartoonify Your Image !')
 top.configure(background='white')
 label=Label(top,background='#CDCDCD', font=('calibri',20,'bold'))
 
+#Building a File Box to choose a particular file
+
 def upload():
     ImagePath=easygui.fileopenbox()
     cartoonify(ImagePath)
-
+    
+#How is an image stored?
 
 def cartoonify(ImagePath):
     # read the image
@@ -36,18 +40,21 @@ def cartoonify(ImagePath):
     ReSized1 = cv2.resize(originalmage, (960, 540))
     #plt.imshow(ReSized1, cmap='gray')
 
-
+#Beginning with image transformations:
+ 
     #converting an image to grayscale
     grayScaleImage= cv2.cvtColor(originalmage, cv2.COLOR_BGR2GRAY)
     ReSized2 = cv2.resize(grayScaleImage, (960, 540))
     #plt.imshow(ReSized2, cmap='gray')
 
+#Smoothening a grayscale image
 
     #applying median blur to smoothen an image
     smoothGrayScale = cv2.medianBlur(grayScaleImage, 5)
     ReSized3 = cv2.resize(smoothGrayScale, (960, 540))
     #plt.imshow(ReSized3, cmap='gray')
-
+#Retrieving the edges of an image
+ 
     #retrieving the edges for cartoon effect
     #by using thresholding technique
     getEdge = cv2.adaptiveThreshold(smoothGrayScale, 255, 
@@ -57,12 +64,15 @@ def cartoonify(ImagePath):
     ReSized4 = cv2.resize(getEdge, (960, 540))
     #plt.imshow(ReSized4, cmap='gray')
 
+#Preparing a Mask Image
+
     #applying bilateral filter to remove noise 
     #and keep edge sharp as required
     colorImage = cv2.bilateralFilter(originalmage, 9, 300, 300)
     ReSized5 = cv2.resize(colorImage, (960, 540))
     #plt.imshow(ReSized5, cmap='gray')
-
+    
+#Giving a Cartoon Effect
 
     #masking edged image with our "BEAUTIFY" image
     cartoonImage = cv2.bitwise_and(colorImage, colorImage, mask=getEdge)
@@ -70,6 +80,8 @@ def cartoonify(ImagePath):
     ReSized6 = cv2.resize(cartoonImage, (960, 540))
     #plt.imshow(ReSized6, cmap='gray')
 
+#Plotting all the transitions together   
+    
     # Plotting the whole transition
     images=[ReSized1, ReSized2, ReSized3, ReSized4, ReSized5, ReSized6]
 
