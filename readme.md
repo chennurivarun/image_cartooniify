@@ -13,8 +13,7 @@ This project converts an image into a cartoon-like image using OpenCV and other 
 
 ## Installation
 
-To run this code in Google Colab, you need to install the required libraries. You can do this using the following command:
+To run this code, you need to install the required libraries. You can do this using the following command:
 
 ```python
-!pip install opencv-python-headless easygui numpy imageio matplotlib pillow
-
+pip install opencv-python easygui numpy imageio matplotlib pillow
